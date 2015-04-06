@@ -1,0 +1,16 @@
+#Notes:
+#
+#This assumes the same file structure as was used in www.zip from the LAB,
+#with the exception that there is an index.html inside www/gnu
+#
+
+GET /gnu/ http/1.0        #Http/1.0 200 OK - Because index.html is located inside /gnu/
+Get /gnu http/1.0         #Http/1.0 404 - Can't open folders
+get /../sws/index.html    #http/1.0 400 - Bad Request because we don't allow any "../" in the address to move up folders
+get / http/1.1            #http/1.0 400 - Bad Request
+get /                     #http/1.0 400 - Bad Request, the http version was not included.
+get / http/1.0 testArg    #Http/1.0 400 - Bad request because we only expected 3 arguments on line 1
+
+get / http/1.0\r\n\r\nSomeOther Arguments #Http/1.0 200 - OK, Because we ignore everything that is not on Line 1.
+gEt / hTTp/1.0            #Http/1.0 200 OK - Caps don't matter in this case :D
+gEt / \r\nhTTp/1.0        #Http/1.0 400 Bad Request - We can't

@@ -1,0 +1,41 @@
+Brett Binnersley, V00776751, Lab Section B01
+CSC 361, Simple Web Server, Programming Assignment #1
+
+Language Used:
+C++
+
+To build it run:
+make
+
+To start the server run:
+sws <PORT NUMBER> <FOLDER TO RUN IN>
+An error message will be displayed if it fails to start, or if the folder to run in was not found.
+
+
+Bonus Features include:
+None - I was going to make it multi-threaded, but did not have the time.
+
+My Test Cases:
+The test cases that I used in addition to http.request's are located in MyTestCases - as well as their expected result based on my interpretation of the assignment,
+
+
+Structure:
+sws.cpp is the main entry point for the program.
+serverLogic.cpp will listen and handle requests.
+
+The following files are used by serverLogic.cpp
+messageFromClient.cpp describes the message received from the client
+Validator.cpp will interpret the clients request and determine what the server should respond with (ie: 200, 400, 404 etc.) and display any error messages.
+messageToClient.cpp will send the message back to the client (400, 404 or 200). In the case that it is a 200, it will attach the requested file to the buffer data. If the buffered data's size EXCEEDS 1024, it will send the client multiple packets each of a max size of 1024.
+LogResults.cpp will log everything that happened on the server.
+
+
+
+Notes:
+1. It was unclear whether or not to include a "\r\n\r\n" when sending a request to the webserver (it was used in P1.pdf but not in http.request), so I made the server accept both.
+2. If the client's request URI was a folder, it will return a 404 Not Found.
+For Example: "GET /folder http/1.0" will return a 404 EVEN if folder exists.
+3. Requesting a file ending with a forward slash afterwards will look for index.html in said folder, or return a 404 if it is not found.
+Example: "GET /folder/ http/1.0" will look for "index.html" in folder (if it exists)
+4. It stated that we "ignore" the request header. I interpreted that as allowing the user to enter addition information AFTER the end of the first line, however the server just ignores it. It does nothing.
+5. It only prints out the filename when the server responds with a 200.
